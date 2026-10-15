@@ -1,0 +1,37 @@
+# Copyright The OpenTelemetry Authors
+# SPDX-License-Identifier: Apache-2.0
+
+entryPoints:
+  web:
+    address: ":8080"
+    transport:
+      respondingTimeouts:
+        readTimeout: 0s
+  admin:
+    address: ":10000"
+experimental:
+  otlpLogs: true
+ping:
+  entryPoint: admin
+api:
+  dashboard: true
+providers:
+  file:
+    filename: /etc/traefik/dynamic.yaml
+tracing:
+  serviceName: frontend-proxy
+  otlp:
+    http:
+      endpoint: http://otel-collector:4318/v1/traces
+metrics:
+  otlp:
+    serviceName: frontend-proxy
+    http:
+      endpoint: http://otel-collector:4318/v1/metrics
+accessLog:
+  otlp:
+    serviceName: frontend-proxy
+    http:
+      endpoint: http://otel-collector:4318/v1/logs
+log:
+  level: INFO

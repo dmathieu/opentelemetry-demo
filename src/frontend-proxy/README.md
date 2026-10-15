@@ -1,8 +1,10 @@
 # Frontend Proxy Service
 
-This service acts as a reverse proxy for the various user-facing web interfaces.
+This service acts as a reverse proxy (Traefik) for the various user-facing web
+interfaces.
 
-## Modifying the Envoy Configuration
+## Modifying the Traefik Configuration
 
-The envoy configuration is generated from the `envoy.tmpl.yaml` file in this
-directory. Environment variables are substituted at deploy-time.
+The static configuration lives in `traefik.yaml` and the routes in
+`dynamic.yaml`, both in this directory. Add a router, middleware and service in
+`dynamic.yaml` to expose a new interface.

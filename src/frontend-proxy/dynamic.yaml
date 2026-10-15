@@ -1,0 +1,147 @@
+# Copyright The OpenTelemetry Authors
+# SPDX-License-Identifier: Apache-2.0
+
+http:
+  routers:
+    loadgen:
+      rule: PathPrefix(`/loadgen`)
+      entryPoints: [web]
+      service: loadgen
+      middlewares: [redirect-trailing-slash, strip-loadgen]
+    otlp-http:
+      rule: PathPrefix(`/otlp-http`)
+      entryPoints: [web]
+      service: otlp-http
+      middlewares: [strip-otlp-http]
+    jaeger:
+      rule: PathPrefix(`/jaeger`)
+      entryPoints: [web]
+      service: jaeger
+      middlewares: [redirect-trailing-slash]
+    grafana:
+      rule: PathPrefix(`/grafana`)
+      entryPoints: [web]
+      service: grafana
+      middlewares: [redirect-trailing-slash]
+    opamp:
+      rule: PathPrefix(`/opamp`)
+      entryPoints: [web]
+      service: opamp
+      middlewares: [redirect-trailing-slash, strip-opamp]
+    telemetry:
+      rule: PathPrefix(`/telemetry`)
+      entryPoints: [web]
+      service: telemetry
+      middlewares: [redirect-trailing-slash, strip-telemetry]
+    images:
+      rule: PathPrefix(`/images`)
+      entryPoints: [web]
+      service: images
+      middlewares: [strip-images]
+    flagservice:
+      rule: PathPrefix(`/flagservice`)
+      entryPoints: [web]
+      service: flagservice
+      middlewares: [strip-flagservice]
+    feature:
+      rule: PathPrefix(`/feature`)
+      entryPoints: [web]
+      service: feature
+      middlewares: [strip-feature]
+    profiles:
+      rule: PathPrefix(`/profiles`)
+      entryPoints: [web]
+      service: profiles
+      middlewares: [redirect-trailing-slash]
+    chatbot:
+      rule: PathPrefix(`/chatbot`)
+      entryPoints: [web]
+      service: chatbot
+      middlewares: [redirect-trailing-slash, strip-chatbot]
+    frontend:
+      rule: PathPrefix(`/`)
+      entryPoints: [web]
+      priority: 1
+      service: frontend
+
+  middlewares:
+    # Appends a trailing slash to bare /<service> paths so relative asset URLs resolve.
+    redirect-trailing-slash:
+      redirectRegex:
+        regex: '^(https?://[^/]+)/(loadgen|jaeger|grafana|opamp|telemetry|profiles|chatbot)$'
+        replacement: '${1}/${2}/'
+        permanent: false
+    strip-loadgen:
+      stripPrefix:
+        prefixes: [/loadgen]
+    strip-otlp-http:
+      stripPrefix:
+        prefixes: [/otlp-http]
+    strip-opamp:
+      stripPrefix:
+        prefixes: [/opamp]
+    strip-telemetry:
+      stripPrefix:
+        prefixes: [/telemetry]
+    strip-images:
+      stripPrefix:
+        prefixes: [/images]
+    strip-flagservice:
+      stripPrefix:
+        prefixes: [/flagservice]
+    strip-feature:
+      stripPrefix:
+        prefixes: [/feature]
+    strip-chatbot:
+      stripPrefix:
+        prefixes: [/chatbot]
+
+  services:
+    loadgen:
+      loadBalancer:
+        servers:
+          - url: http://load-generator:8089
+    otlp-http:
+      loadBalancer:
+        servers:
+          - url: http://otel-collector:4318
+    jaeger:
+      loadBalancer:
+        servers:
+          - url: http://jaeger:16686
+    grafana:
+      loadBalancer:
+        servers:
+          - url: http://grafana:3000
+    opamp:
+      loadBalancer:
+        servers:
+          - url: http://opamp-server:4321
+    telemetry:
+      loadBalancer:
+        servers:
+          - url: http://telemetry-docs:8000
+    images:
+      loadBalancer:
+        servers:
+          - url: http://image-provider:8081
+    flagservice:
+      loadBalancer:
+        servers:
+          - url: http://flagd:8013
+    feature:
+      loadBalancer:
+        servers:
+          - url: http://flagd-ui:4000
+    profiles:
+      loadBalancer:
+        servers:
+          - url: http://firepit:8080
+    chatbot:
+      loadBalancer:
+        servers:
+          - url: http://chatbot:7860
+    frontend:
+      loadBalancer:
+        servers:
+          - url: http://frontend:8080
