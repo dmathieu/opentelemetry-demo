@@ -838,6 +838,9 @@ services:
       - "${OTEL_COLLECTOR_PORT_GRPC}"
       - "${OTEL_COLLECTOR_PORT_HTTP}"
     logging: *logging
+    env_file:
+      - path: ./.elastic.env
+        required: false
     environment:
       - AD_PROMETHEUS_PORT
       - FRONTEND_PROXY_ADDR

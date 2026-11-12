@@ -31,3 +31,18 @@
 #       exporters: [otlp_http/prometheus, debug, otlp_grpc/mybackend]           # repeat upstream exporters
 #     logs:
 #       exporters: [opensearch, debug, otlp_grpc/mybackend]                     # repeat upstream exporters
+
+exporters:
+  otlp_http/elastic:
+    endpoint: https://devfest-f7fce6.ingest.europe-west1.gcp.elastic.cloud:443
+    headers:
+      Authorization: ApiKey ${env:ELASTIC_API_KEY}
+
+service:
+  pipelines:
+    traces:
+      exporters: [debug, span_metrics, otlp_http/elastic]
+    metrics:
+      exporters: [debug, otlp_http/elastic]
+    logs:
+      exporters: [debug, otlp_http/elastic]
