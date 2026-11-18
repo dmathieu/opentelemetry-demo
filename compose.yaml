@@ -499,7 +499,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 20M
+          memory: 64M
     restart: unless-stopped
     ports:
       - "${PRODUCT_CATALOG_PORT}"

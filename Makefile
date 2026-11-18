@@ -226,6 +226,11 @@ clean-images:
         false; \
     fi
 
+.PHONY: validate-telemetry
+validate-telemetry:
+	$(MAKE) redeploy service=frontend
+	@internal/scripts/validate-telemetry.sh
+
 .PHONY: run-frontend-tests
 run-frontend-tests:
 	$(DOCKER_COMPOSE_CMD) $(DOCKER_COMPOSE_ENV) $(DOCKER_COMPOSE_FILES) $(DOCKER_COMPOSE_FILES_TESTS) run frontendTests

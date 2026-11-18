@@ -37,11 +37,16 @@ exporters:
     endpoint: https://devfest-f7fce6.ingest.europe-west1.gcp.elastic.cloud:443
     headers:
       Authorization: ApiKey ${env:ELASTIC_API_KEY}
+  otlp_grpc/weaver:
+    endpoint: weaver-live-check:4317
+    compression: none
+    tls:
+      insecure: true
 
 service:
   pipelines:
     traces:
-      exporters: [debug, span_metrics, otlp_http/elastic]
+      exporters: [debug, span_metrics, count/http_requests, otlp_http/elastic, otlp_grpc/weaver]
     metrics:
       exporters: [debug, otlp_http/elastic]
     logs:

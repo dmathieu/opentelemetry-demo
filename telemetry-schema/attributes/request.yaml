@@ -18,3 +18,9 @@ attributes:
     stability: stable
     note: The number of times a single synthetic request scenario repeats a request against the same endpoint
     examples: [10, 50, 100]
+  - key: demo.http.response.status_class
+    type: string
+    brief: HTTP response status code range
+    stability: stable
+    note: The range of the HTTP response status code, such as 2xx or 5xx. Derived by the collector from http.response.status_code.
+    examples: ["2xx", "4xx", "5xx"]

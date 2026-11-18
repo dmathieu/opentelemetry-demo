@@ -65,7 +65,7 @@ service:
   extensions: [opamp]
   pipelines:
     traces:
-      exporters: [debug, otlp_grpc/jaeger, span_metrics]
+      exporters: [debug, otlp_grpc/jaeger, span_metrics, count/http_requests]
     metrics:
       exporters: [debug, otlp_http/prometheus]
     logs:

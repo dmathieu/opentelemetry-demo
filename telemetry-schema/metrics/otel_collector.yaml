@@ -1,0 +1,17 @@
+# Copyright The OpenTelemetry Authors
+# SPDX-License-Identifier: Apache-2.0
+
+file_format: definition/2
+metrics:
+  - name: demo.http.server.requests
+    brief: HTTP server request counter
+    instrument: counter
+    unit: "{request}"
+    stability: stable
+    requirement_level: recommended
+    note: Counts HTTP server spans, derived from traces by the collector count connector
+    annotations:
+      service: otel-collector
+    attributes:
+      - ref: demo.http.response.status_class
+        requirement_level: required
